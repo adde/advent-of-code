@@ -12,10 +12,13 @@ import (
 func main() {
 	startTime := time.Now()
 
-	pattern := "^\\D*?(\\d|one|two|three|four|five|six|seven|eight|nine)(?:.*(\\d|one|two|three|four|five|six|seven|eight|nine))?\\D*$"
-	regex := regexp.MustCompile(pattern)
+	patternP1 := "^\\D*?(\\d)(?:.*(\\d))?\\D*$"
+	regexP1 := regexp.MustCompile(patternP1)
+	patternP2 := "^\\D*?(\\d|one|two|three|four|five|six|seven|eight|nine)(?:.*(\\d|one|two|three|four|five|six|seven|eight|nine))?\\D*$"
+	regexP2 := regexp.MustCompile(patternP2)
 
-	sum := 0
+	sumP1 := 0
+	sumP2 := 0
 
 	file, err := os.Open("input.txt")
 	if err != nil {
@@ -28,27 +31,36 @@ func main() {
 
 	for scanner.Scan() {
 		line := scanner.Text()
-		matches := regex.FindStringSubmatch(line)
-		matchOne := getNumber(matches[1])
-		matchTwo := matchOne
-		if matches[2] != "" {
-			matchTwo = getNumber(matches[2])
-		}
-
-		num, err := strconv.Atoi(matchOne + matchTwo)
-		if err != nil {
-			fmt.Println("Error:", err)
-			return
-		}
-		sum += num
+		numP1 := getCombinedNumbers(line, regexP1)
+		sumP1 += numP1
+		numP2 := getCombinedNumbers(line, regexP2)
+		sumP2 += numP2
 	}
 
 	if err := scanner.Err(); err != nil {
 		fmt.Println("Error:", err)
 	}
 
-	fmt.Println("Sum:", sum)
-	fmt.Println("Elapsed time:", time.Now().Sub(startTime))
+	fmt.Println("Sum part one:", sumP1)
+	fmt.Println("Sum part two:", sumP2)
+	fmt.Println("Elapsed time:", time.Since(startTime))
+}
+
+func getCombinedNumbers(line string, regex *regexp.Regexp) int {
+	matches := regex.FindStringSubmatch(line)
+	matchOne := getNumber(matches[1])
+	matchTwo := matchOne
+	if matches[2] != "" {
+		matchTwo = getNumber(matches[2])
+	}
+
+	num, err := strconv.Atoi(matchOne + matchTwo)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return 0
+	}
+
+	return num
 }
 
 func getNumber(number string) string {
