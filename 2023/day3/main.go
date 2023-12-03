@@ -80,6 +80,7 @@ func main() {
 		for _, special := range line {
 			numberLines := []int{lineNumber - 1, lineNumber, lineNumber + 1}
 
+			// Check if special character is a gear
 			if special[2] == 1 {
 				matches := []int{}
 				for _, numberLine := range numberLines {
@@ -92,15 +93,9 @@ func main() {
 					}
 				}
 
-				gearSum := 0
 				if len(matches) == 2 {
-					gearSum = 1
-					for _, match := range matches {
-						gearSum *= match
-					}
+					sumP2 += matches[0] * matches[1]
 				}
-
-				sumP2 += gearSum
 			}
 		}
 	}
