@@ -28,5 +28,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Println("Elapsed time", time.Since(startTime))
+	fmt.Println()
+	fmt.Printf("Elapsed time: %s\n\n", time.Since(startTime))
 }
