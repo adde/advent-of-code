@@ -22,3 +22,21 @@ func BoolToInt(b bool) int {
 
 	return 0
 }
+
+func HexToDec(hex string) int {
+	i, err := strconv.ParseInt(hex, 16, 64)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return int(i)
+}
+
+func Abs(x int) int {
+	if x < 0 {
+		return -x
+	}
+
+	return x
+}
