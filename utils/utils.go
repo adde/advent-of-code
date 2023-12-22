@@ -40,3 +40,16 @@ func Abs(x int) int {
 
 	return x
 }
+
+func Gcd(a, b int) int {
+	for b != 0 {
+		a, b = b, a%b
+	}
+
+	return a
+}
+
+// Function to calculate the least common multiple (LCM) of two numbers
+func Lcm(a, b int) int {
+	return (a * b) / Gcd(a, b)
+}
