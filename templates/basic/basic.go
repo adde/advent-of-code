@@ -1,30 +1,19 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"log"
-	"os"
 	"time"
+
+	"github.com/adde/advent-of-code/utils"
 )
 
 func main() {
 	startTime := time.Now()
 
-	file, err := os.Open("input.txt")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer file.Close()
+	lines := utils.ReadLines("input.txt")
 
-	scanner := bufio.NewScanner(file)
-
-	for scanner.Scan() {
-		line := scanner.Text()
+	for _, line := range lines {
 		fmt.Println(line)
-	}
-	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
 	}
 
 	fmt.Println()
