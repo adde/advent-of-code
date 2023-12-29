@@ -33,7 +33,7 @@ func (c *Component) AddConnection(connection string) {
 
 func main() {
 	startTime := time.Now()
-	lines := utils.ReadInput("input.txt")
+	lines := utils.ReadLines("input.txt")
 
 	fmt.Println("\nComponent group size:", getComponentGroupSize(parseInput(lines)))
 	fmt.Printf("Elapsed time: %s\n\n", time.Since(startTime))

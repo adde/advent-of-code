@@ -7,8 +7,9 @@ import (
 	"strings"
 )
 
-func ReadInput(filename string) []string {
+func ReadLines(filename string) []string {
 	data, err := os.ReadFile(filename)
+
 	if err != nil {
 		log.Fatal(err)
 	}

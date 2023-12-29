@@ -59,7 +59,7 @@ func (s Set) GetIntersectingValues(t Set) Set {
 func main() {
 	startTime := time.Now()
 
-	lines := utils.ReadInput("input.txt")
+	lines := utils.ReadLines("input.txt")
 	hailstones := parseInput(lines)
 
 	fmt.Println("\nSum of intersections(part one):", getIntersections(hailstones))
