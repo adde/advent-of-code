@@ -1,5 +1,7 @@
 package utils
 
+import "sort"
+
 type OrderedMap struct {
 	Keys   []string
 	Values map[string]int
@@ -25,4 +27,22 @@ func (om *OrderedMap) Delete(key string) {
 		}
 	}
 	delete(om.Values, key)
+}
+
+func (om *OrderedMap) Sort(isDesc bool) {
+	if isDesc {
+		sort.SliceStable(om.Keys, func(i, j int) bool {
+			if om.Values[om.Keys[i]] > om.Values[om.Keys[j]] {
+				return true
+			}
+			return false
+		})
+	} else {
+		sort.SliceStable(om.Keys, func(i, j int) bool {
+			if om.Values[om.Keys[i]] < om.Values[om.Keys[j]] {
+				return true
+			}
+			return false
+		})
+	}
 }
