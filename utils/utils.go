@@ -2,8 +2,19 @@ package utils
 
 import (
 	"log"
+	"os"
 	"strconv"
+	"strings"
 )
+
+func ReadInput(filename string) []string {
+	data, err := os.ReadFile(filename)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return strings.Split(string(data), "\n")
+}
 
 func ToInt(s string) int {
 	i, err := strconv.Atoi(s)
