@@ -1,105 +1,126 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"log"
-	"os"
 	"time"
-)
 
-type Step struct {
-	X, Y, Count int
-}
+	"github.com/adde/advent-of-code/utils"
+)
 
 var grid [][]rune
 
 func main() {
 	startTime := time.Now()
 
-	file, err := os.Open("input.txt")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer file.Close()
+	// Populate the grid from input
+	parseInput(utils.ReadLines("input.txt"))
 
-	scanner := bufio.NewScanner(file)
+	// Find the starting position marked 'S' in the grid
+	startX, startY := getStartPos('S')
 
-	r := 0
-	for scanner.Scan() {
-		line := scanner.Text()
-		grid = append(grid, make([]rune, len(line)))
-
-		for c, v := range line {
-			grid[r][c] = v
-		}
-
-		r++
-	}
-	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Println("\nGarden plots reached:", gardenPlotsReached(64))
+	fmt.Println("\nGarden plots reached(part one):", gardenPlotsReached(startY, startX, 64))
+	fmt.Println("Garden plots reached(part two):", gardenPlotsReachedP2(startX, startY, 26501365))
 	fmt.Printf("Elapsed time: %s\n\n", time.Since(startTime))
 }
 
-func gardenPlotsReached(steps int) int {
-	rows := len(grid)
-	cols := len(grid[0])
+func parseInput(lines []string) {
+	row := 0
 
-	visited := make([][]bool, rows)
-	for i := range visited {
-		visited[i] = make([]bool, cols)
+	for _, line := range lines {
+		grid = append(grid, make([]rune, len(line)))
+
+		for col, val := range line {
+			grid[row][col] = val
+		}
+
+		row++
 	}
-
-	// Find the starting position marked 'S' in the grid
-	startX, startY := getStartPos()
-
-	// BFS to find the number of garden plots that can be reached
-	return bfs(startX, startY, steps, visited)
 }
 
-func bfs(x, y, steps int, visited [][]bool) int {
-	directions := [][2]int{{0, 1}, {0, -1}, {1, 0}, {-1, 0}}
+func gardenPlotsReached(startRow, startCol, steps int) int {
+	directions := [][]int{{1, 0}, {-1, 0}, {0, 1}, {0, -1}}
 	reached := make(map[string]bool)
-	queue := []Step{{x, y, 0}}
+	seen := make(map[string]bool)
+	q := make([][3]int, 0)
+	q = append(q, [3]int{startRow, startCol, steps})
 
-	for len(queue) > 0 {
-		curr := queue[0]
-		queue = queue[1:]
+	for len(q) > 0 {
+		current := q[0]
+		cr, cc, cs := current[0], current[1], current[2]
+		q = q[1:]
 
-		if curr.Count <= steps && curr.Count%2 == 0 {
-			reached[fmt.Sprintf("%d,%d", curr.X, curr.Y)] = true
+		if cs%2 == 0 {
+			reached[fmt.Sprintf("%d,%d", cr, cc)] = true
 		}
 
-		if visited[curr.Y][curr.X] {
+		if cs == 0 {
 			continue
 		}
-		visited[curr.Y][curr.X] = true
 
-		for _, d := range directions {
-			newX, newY := curr.X+d[1], curr.Y+d[0]
+		for _, dir := range directions {
+			nr, nc := cr+dir[0], cc+dir[1]
+			sk := fmt.Sprintf("%d,%d", nr, nc)
 
-			// If we hit a wall or a stone, this branch is dead
-			if !isInBoundary(newX, newY) || grid[newY][newX] == '#' {
+			if !isInBoundary(nc, nr) || grid[nr][nc] == '#' {
 				continue
 			}
 
-			// Otherwise, add the new tile to the queue
-			queue = append(queue, Step{newX, newY, curr.Count + 1})
+			next := [3]int{nr, nc, cs - 1}
+			if _, ok := seen[sk]; ok {
+				continue
+			}
+
+			seen[sk] = true
+			q = append(q, next)
 		}
 	}
 
 	return len(reached)
 }
 
-func getStartPos() (int, int) {
+func gardenPlotsReachedP2(startX, startY, steps int) int {
+	gridSize := len(grid)
+	gridWidth := steps/gridSize - 1
+
+	// Get the number of grids that are odd and even
+	oddGrids := ((gridWidth/2)*2 + 1) * ((gridWidth/2)*2 + 1)
+	evenGrids := (((gridWidth + 1) / 2) * 2) * (((gridWidth + 1) / 2) * 2)
+
+	// Get the number of plots reached in odd and even grids
+	oddPlotsReached := gardenPlotsReached(startY, startX, gridSize*2+1)
+	evenPlotsReached := gardenPlotsReached(startY, startX, gridSize*2)
+
+	// Get the number of plots reached in the corners of the grid
+	cornerT := gardenPlotsReached(gridSize-1, startX, gridSize-1)
+	cornerR := gardenPlotsReached(startY, 0, gridSize-1)
+	cornerB := gardenPlotsReached(0, startX, gridSize-1)
+	cornerL := gardenPlotsReached(startY, gridSize-1, gridSize-1)
+
+	// Get the number of plots reached in the corners of the small grids
+	smallTR := gardenPlotsReached(gridSize-1, 0, gridSize/2-1)
+	smallTL := gardenPlotsReached(gridSize-1, gridSize-1, gridSize/2-1)
+	smallBR := gardenPlotsReached(0, 0, gridSize/2-1)
+	smallBL := gardenPlotsReached(0, gridSize-1, gridSize/2-1)
+
+	// Get the number of plots reached in the corners of the large grids
+	largeTR := gardenPlotsReached(gridSize-1, 0, gridSize*3/2-1)
+	largeTL := gardenPlotsReached(gridSize-1, gridSize-1, gridSize*3/2-1)
+	largeBR := gardenPlotsReached(0, 0, gridSize*3/2-1)
+	largeBL := gardenPlotsReached(0, gridSize-1, gridSize*3/2-1)
+
+	return oddGrids*oddPlotsReached +
+		evenGrids*evenPlotsReached +
+		cornerT + cornerR + cornerB + cornerL +
+		((gridWidth + 1) * (smallTR + smallTL + smallBR + smallBL)) +
+		(gridWidth * (largeTR + largeTL + largeBR + largeBL))
+}
+
+func getStartPos(char rune) (int, int) {
 	startX, startY := 0, 0
 
 	for y, row := range grid {
 		for x := range row {
-			if grid[y][x] == 'S' {
+			if grid[y][x] == char {
 				startX, startY = x, y
 				break
 			}
