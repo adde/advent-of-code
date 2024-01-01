@@ -65,3 +65,13 @@ func Gcd(a, b int) int {
 func Lcm(a, b int) int {
 	return (a * b) / Gcd(a, b)
 }
+
+func Sign(x int) int {
+	if x > 0 {
+		return 1
+	} else if x < 0 {
+		return -1
+	}
+
+	return 0
+}
