@@ -16,6 +16,7 @@ func main() {
 		fmt.Println(line)
 	}
 
-	fmt.Println()
-	fmt.Printf("Elapsed time: %s\n\n", time.Since(startTime))
+	fmt.Println("\nPart one:")
+	fmt.Println("Part two:")
+	fmt.Printf("\nExecution time: %s\n\n", time.Since(startTime))
 }
