@@ -27,6 +27,16 @@ func ToInt(s string) int {
 	return i
 }
 
+func ToIntSlice(s []string) []int {
+	ints := make([]int, len(s))
+
+	for i, v := range s {
+		ints[i] = ToInt(v)
+	}
+
+	return ints
+}
+
 func BoolToInt(b bool) int {
 	if b {
 		return 1
