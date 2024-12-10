@@ -44,11 +44,11 @@ func main() {
 func partOne(disk []int) int {
 	disk = slices.Clone[[]int](disk)
 
-	// Go through the disk and find empty space(-)
+	// Go through the disk and find free space(-1)
 	for i := 0; i < len(disk); i++ {
 		if disk[i] == -1 {
 			for j := len(disk) - 1; j > i; j-- {
-				// Move file blocks from the end of the disk to the empty space
+				// Move file blocks from the end of the disk to the free space
 				if disk[j] != -1 {
 					disk[i] = disk[j]
 					disk[j] = -1
@@ -72,8 +72,8 @@ func partOne(disk []int) int {
 func partTwo(disk []int) int {
 	disk = slices.Clone[[]int](disk)
 
-	// Find all empty space(-1) between files
-	emptySpace := getEmptySpace(disk)
+	// Find all free space(-1) between files
+	freeSpace := getFreeSpace(disk)
 	moved := make(map[int]bool)
 
 	for i := len(disk) - 1; i >= 0; i-- {
@@ -94,23 +94,23 @@ func partTwo(disk []int) int {
 		fileStart++
 		fileSize := i - fileStart + 1
 
-		// Continue to the next file in the disk
+		// Continue to the next file on the disk
 		i = fileStart
 
-		for k, space := range emptySpace {
+		for k, space := range freeSpace {
 			// If the empty space can fit the file and the space is before the file
 			if space[1]-space[0]+1 >= fileSize && space[0] < fileStart {
 				for j := 0; j < fileSize; j++ {
-					// Move file to empty space
+					// Move file to free space
 					disk[space[0]+j] = disk[fileStart+j]
 					disk[fileStart+j] = -1
 					moved[space[0]+j] = true
 				}
-				emptySpace[k][0] += fileSize
+				freeSpace[k][0] += fileSize
 
-				// Remove empty space if it's full
-				if emptySpace[k][0] > emptySpace[k][1] {
-					emptySpace = append(emptySpace[:k], emptySpace[k+1:]...)
+				// Remove free space if it's full
+				if freeSpace[k][0] > freeSpace[k][1] {
+					freeSpace = append(freeSpace[:k], freeSpace[k+1:]...)
 				}
 
 				break
@@ -129,7 +129,7 @@ func partTwo(disk []int) int {
 	return sum
 }
 
-func getEmptySpace(disk []int) [][2]int {
+func getFreeSpace(disk []int) [][2]int {
 	freeSpace := [][2]int{}
 
 	for i := 0; i < len(disk); i++ {
