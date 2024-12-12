@@ -1,5 +1,7 @@
 package grid
 
+import "fmt"
+
 type Point struct {
 	Row, Col int
 }
@@ -8,6 +10,16 @@ type Grid [][]rune
 
 func (g Grid) IsInsideBounds(r, c int) bool {
 	return r >= 0 && r < len(g) && c >= 0 && c < len(g[0])
+}
+
+func (g Grid) Print() {
+	for _, r := range g {
+		for _, c := range r {
+			fmt.Print(string(c))
+		}
+		fmt.Println()
+	}
+	fmt.Println()
 }
 
 func CreateFromLines(lines []string) Grid {
