@@ -3,6 +3,7 @@ package utils
 import (
 	"log"
 	"os"
+	"regexp"
 	"strconv"
 	"strings"
 )
@@ -27,6 +28,14 @@ func ReadLines(filename string) []string {
 	}
 
 	return strings.Split(string(data), "\n")
+}
+
+// Get all integers from a string
+func GetIntsFromString(s string) []int {
+	re := regexp.MustCompile(`\d+`)
+	matches := re.FindAllString(s, -1)
+
+	return ToIntSlice(matches)
 }
 
 // Convert a string to an integer
