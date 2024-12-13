@@ -6,6 +6,7 @@ import (
 
 	u "github.com/adde/advent-of-code/utils"
 	g "github.com/adde/advent-of-code/utils/grid"
+	q "github.com/adde/advent-of-code/utils/queue"
 	"github.com/adde/advent-of-code/utils/set"
 )
 
@@ -39,14 +40,14 @@ func getScoresAndRatings(grid g.Grid) (int, int) {
 
 	// Run BFS from each trail head to find all possible paths
 	for _, trailHead := range trailHeads {
-		queue := []g.Point{trailHead}
+		queue := q.New(trailHead)
 		visited := map[g.Point]bool{}
 		canReach := set.New[g.Point]()
 
 		rating := 0
 
-		for len(queue) > 0 {
-			current := queue[0]
+		for !queue.IsEmpty() {
+			current := queue.Pop()
 
 			if grid[current.Row][current.Col] == TRAIL_END {
 				// Keep track of which distinct trail heads we can reach
@@ -56,7 +57,6 @@ func getScoresAndRatings(grid g.Grid) (int, int) {
 			}
 
 			visited[current] = true
-			queue = queue[1:]
 
 			for _, dir := range directions {
 				newRow := current.Row + dir[0]
@@ -66,7 +66,7 @@ func getScoresAndRatings(grid g.Grid) (int, int) {
 				if grid.IsInsideBounds(newRow, newCol) &&
 					!visited[newPoint] &&
 					checkIfPointIsValid(grid[newRow][newCol], grid[current.Row][current.Col]) {
-					queue = append(queue, newPoint)
+					queue.Append(newPoint)
 				}
 			}
 		}
