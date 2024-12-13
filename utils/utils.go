@@ -7,6 +7,16 @@ import (
 	"strings"
 )
 
+func ReadAll(filename string) string {
+	data, err := os.ReadFile(filename)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return string(data)
+}
+
 func ReadLines(filename string) []string {
 	data, err := os.ReadFile(filename)
 
