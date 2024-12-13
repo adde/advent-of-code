@@ -7,6 +7,7 @@ import (
 	"strings"
 )
 
+// Read a file and return its content as a string
 func ReadAll(filename string) string {
 	data, err := os.ReadFile(filename)
 
@@ -17,6 +18,7 @@ func ReadAll(filename string) string {
 	return string(data)
 }
 
+// Read a file and return its content as a slice of strings
 func ReadLines(filename string) []string {
 	data, err := os.ReadFile(filename)
 
@@ -27,6 +29,7 @@ func ReadLines(filename string) []string {
 	return strings.Split(string(data), "\n")
 }
 
+// Convert a string to an integer
 func ToInt(s string) int {
 	i, err := strconv.Atoi(s)
 
@@ -37,6 +40,7 @@ func ToInt(s string) int {
 	return i
 }
 
+// Convert a slice of strings to a slice of integers
 func ToIntSlice(s []string) []int {
 	ints := make([]int, len(s))
 
@@ -47,6 +51,7 @@ func ToIntSlice(s []string) []int {
 	return ints
 }
 
+// Convert a boolean to an integer
 func BoolToInt(b bool) int {
 	if b {
 		return 1
@@ -55,6 +60,7 @@ func BoolToInt(b bool) int {
 	return 0
 }
 
+// Convert a hexadecimal string to an integer
 func HexToDec(hex string) int {
 	i, err := strconv.ParseInt(hex, 16, 64)
 
@@ -65,6 +71,7 @@ func HexToDec(hex string) int {
 	return int(i)
 }
 
+// Get the absolute value of an integer
 func Abs(x int) int {
 	if x < 0 {
 		return -x
@@ -73,6 +80,7 @@ func Abs(x int) int {
 	return x
 }
 
+// Calculate the greatest common divisor (GCD) of two numbers
 func Gcd(a, b int) int {
 	for b != 0 {
 		a, b = b, a%b
@@ -81,11 +89,12 @@ func Gcd(a, b int) int {
 	return a
 }
 
-// Function to calculate the least common multiple (LCM) of two numbers
+// Calculate the least common multiple (LCM) of two numbers
 func Lcm(a, b int) int {
 	return (a * b) / Gcd(a, b)
 }
 
+// Calculate the sign of an integer
 func Sign(x int) int {
 	if x > 0 {
 		return 1
