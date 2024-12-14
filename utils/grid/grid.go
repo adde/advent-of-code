@@ -8,6 +8,14 @@ type Point struct {
 
 type Grid [][]rune
 
+func (g Grid) Get(r, c int) rune {
+	return g[r][c]
+}
+
+func (g Grid) Set(r, c int, v rune) {
+	g[r][c] = v
+}
+
 func (g Grid) IsInsideBounds(r, c int) bool {
 	return r >= 0 && r < len(g) && c >= 0 && c < len(g[0])
 }
