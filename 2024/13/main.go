@@ -26,7 +26,7 @@ func main() {
 	machines := make([]Machine, 0)
 
 	for _, section := range sections {
-		numbers := u.GetIntsFromString(section)
+		numbers := u.GetIntsFromString(section, false)
 
 		machines = append(machines, Machine{
 			A:     Point{x: numbers[0], y: numbers[1]},

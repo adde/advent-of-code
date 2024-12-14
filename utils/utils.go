@@ -31,8 +31,12 @@ func ReadLines(filename string) []string {
 }
 
 // Get all integers from a string
-func GetIntsFromString(s string) []int {
+func GetIntsFromString(s string, includeNegatives bool) []int {
 	re := regexp.MustCompile(`\d+`)
+	if includeNegatives {
+		re = regexp.MustCompile(`-?\d+`)
+	}
+
 	matches := re.FindAllString(s, -1)
 
 	return ToIntSlice(matches)
