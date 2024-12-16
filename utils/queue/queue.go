@@ -1,8 +1,8 @@
 package queue
 
-type Queue[T comparable] []T
+type Queue[T any] []T
 
-func New[T comparable](item T) Queue[T] {
+func New[T any](item T) Queue[T] {
 	q := make(Queue[T], 0)
 	q.Append(item)
 	return q
