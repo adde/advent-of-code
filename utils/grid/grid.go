@@ -30,6 +30,28 @@ func (g Grid) Print() {
 	fmt.Println()
 }
 
+func (g *Grid) Clear(v rune) {
+	for i := 0; i < len(*g); i++ {
+		for j := 0; j < len((*g)[i]); j++ {
+			(*g)[i][j] = v
+		}
+	}
+}
+
+func Create(rows, cols int, v rune) Grid {
+	grid := make(Grid, rows)
+
+	for r := range grid {
+		grid[r] = make([]rune, cols)
+
+		for c := range grid[r] {
+			grid[r][c] = v
+		}
+	}
+
+	return grid
+}
+
 func CreateFromLines(lines []string) Grid {
 	grid := make([][]rune, len(lines))
 
