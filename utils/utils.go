@@ -39,7 +39,7 @@ func GetIntsFromString(s string, includeNegatives bool) []int {
 
 	matches := re.FindAllString(s, -1)
 
-	return ToIntSlice(matches)
+	return StringsToInts(matches)
 }
 
 // Convert a string to an integer
@@ -54,7 +54,7 @@ func ToInt(s string) int {
 }
 
 // Convert a slice of strings to a slice of integers
-func ToIntSlice(s []string) []int {
+func StringsToInts(s []string) []int {
 	ints := make([]int, len(s))
 
 	for i, v := range s {

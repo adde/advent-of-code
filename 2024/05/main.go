@@ -6,12 +6,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/adde/advent-of-code/utils"
+	u "github.com/adde/advent-of-code/utils"
 )
 
 func main() {
 	startTime := time.Now()
-	lines := utils.ReadLines("input.txt")
+	lines := u.ReadLines("input.txt")
 
 	rules := make(map[[2]int]int)
 	updates := make([][]int, 0)
@@ -25,10 +25,10 @@ func main() {
 
 		if addingRules {
 			parts := strings.Split(line, "|")
-			rules[[2]int{utils.ToInt(parts[0]), utils.ToInt(parts[1])}] = 0
+			rules[[2]int{u.ToInt(parts[0]), u.ToInt(parts[1])}] = 0
 		} else {
 			parts := strings.Split(line, ",")
-			updates = append(updates, utils.ToIntSlice(parts))
+			updates = append(updates, u.StringsToInts(parts))
 		}
 	}
 

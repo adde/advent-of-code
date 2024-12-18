@@ -23,7 +23,7 @@ func main() {
 
 		equations = append(equations, Equation{
 			testValue: u.ToInt(parts[0]),
-			numbers:   u.ToIntSlice(strings.Split(parts[1], " ")),
+			numbers:   u.StringsToInts(strings.Split(parts[1], " ")),
 		})
 	}
 
