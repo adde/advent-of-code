@@ -64,6 +64,17 @@ func ToIntSlice(s []string) []int {
 	return ints
 }
 
+// Convert a slice of integers to a slice of strings
+func IntsToStrings(ints []int) []string {
+	strings := []string{}
+
+	for _, i := range ints {
+		strings = append(strings, strconv.Itoa(i))
+	}
+
+	return strings
+}
+
 // Convert a boolean to an integer
 func BoolToInt(b bool) int {
 	if b {
