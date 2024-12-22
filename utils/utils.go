@@ -128,3 +128,31 @@ func Sign(x int) int {
 
 	return 0
 }
+
+// Converts a map with any key type K and integer values to a slice of integers
+func MapValuesToInts[K comparable](values map[K]int) []int {
+	ints := make([]int, len(values))
+
+	for _, v := range values {
+		ints = append(ints, v)
+	}
+
+	return ints
+}
+
+// Finds the maximum value in a slice of integers
+func MaxSlice(slice []int) int {
+	if len(slice) == 0 {
+		return 0
+	}
+
+	max := slice[0]
+
+	for _, value := range slice {
+		if value > max {
+			max = value
+		}
+	}
+
+	return max
+}
