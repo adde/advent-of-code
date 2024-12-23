@@ -38,6 +38,19 @@ func (g *Grid) Clear(v rune) {
 	}
 }
 
+// Find the position of a character in a grid
+func (g *Grid) Find(v rune) (int, int) {
+	for r, row := range *g {
+		for c, val := range row {
+			if val == v {
+				return r, c
+			}
+		}
+	}
+
+	return -1, -1
+}
+
 func Create(rows, cols int, v rune) Grid {
 	grid := make(Grid, rows)
 
