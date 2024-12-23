@@ -51,6 +51,16 @@ func (g *Grid) Find(v rune) (int, int) {
 	return -1, -1
 }
 
+// Get the row length of a grid
+func (g *Grid) RowLen() int {
+	return len(*g)
+}
+
+// Get the column length of a grid
+func (g *Grid) ColumnLen() int {
+	return len((*g)[0])
+}
+
 func Create(rows, cols int, v rune) Grid {
 	grid := make(Grid, rows)
 
