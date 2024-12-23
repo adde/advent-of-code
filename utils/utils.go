@@ -156,3 +156,13 @@ func MaxSlice(slice []int) int {
 
 	return max
 }
+
+// Check if a slice of strings contains a specific string
+func SliceContainsString(slice []string, str string) bool {
+	for _, s := range slice {
+		if s == str {
+			return true
+		}
+	}
+	return false
+}
