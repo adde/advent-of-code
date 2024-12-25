@@ -184,3 +184,66 @@ func SliceContainsString(slice []string, str string) bool {
 	}
 	return false
 }
+
+// Combines two slices into a slice of pairs.
+// Discards any elements from the longer slice.
+func Zip[T, U any](slice1 []T, slice2 []U) []struct {
+	Left  T
+	Right U
+} {
+	minLen := len(slice1)
+	if len(slice2) < minLen {
+		minLen = len(slice2)
+	}
+
+	result := make([]struct {
+		Left  T
+		Right U
+	}, minLen)
+
+	for i := 0; i < minLen; i++ {
+		result[i] = struct {
+			Left  T
+			Right U
+		}{
+			Left:  slice1[i],
+			Right: slice2[i],
+		}
+	}
+
+	return result
+}
+
+// Get all combinations of values from multiple slices
+func CartesianProduct[T any](arrays ...[]T) [][]T {
+	if len(arrays) == 0 {
+		return [][]T{}
+	}
+
+	// Calculate total number of combinations
+	result := 1
+	for _, arr := range arrays {
+		result *= len(arr)
+	}
+
+	// Initialize the output slice
+	product := make([][]T, result)
+	for i := range product {
+		product[i] = make([]T, len(arrays))
+	}
+
+	// Generate combinations
+	total := result
+	for i, arr := range arrays {
+		if len(arr) == 0 {
+			return [][]T{}
+		}
+
+		total /= len(arr)
+		for j := 0; j < result; j++ {
+			product[j][i] = arr[(j/total)%len(arr)]
+		}
+	}
+
+	return product
+}
