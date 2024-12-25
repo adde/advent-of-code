@@ -129,6 +129,24 @@ func Sign(x int) int {
 	return 0
 }
 
+// Get the minimum of two integers
+func Min(a, b int) int {
+	if a < b {
+		return a
+	}
+
+	return b
+}
+
+// Get the maximum of two integers
+func Max(a, b int) int {
+	if a > b {
+		return a
+	}
+
+	return b
+}
+
 // Converts a map with any key type K and integer values to a slice of integers
 func MapValuesToInts[K comparable](values map[K]int) []int {
 	ints := make([]int, len(values))
