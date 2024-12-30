@@ -51,6 +51,17 @@ func (g *Grid) Find(v rune) (int, int) {
 	return -1, -1
 }
 
+func (g *Grid) Copy() Grid {
+	grid := make(Grid, len(*g))
+
+	for r, row := range *g {
+		grid[r] = make([]rune, len(row))
+		copy(grid[r], row)
+	}
+
+	return grid
+}
+
 // Get the row length of a grid
 func (g *Grid) RowLen() int {
 	return len(*g)
