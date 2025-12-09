@@ -247,3 +247,8 @@ func CartesianProduct[T any](arrays ...[]T) [][]T {
 
 	return product
 }
+
+func PrettyPrint(v interface{}) {
+	b, _ := json.MarshalIndent(v, "", "  ")
+	fmt.Println(string(b))
+}
